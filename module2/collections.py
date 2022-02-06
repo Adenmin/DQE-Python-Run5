@@ -3,13 +3,8 @@ import string
 
 # Part 1
 # Create list if random number of dicts.
-random_dict = dict()
-random_list = []
-for i in range(random.randint(2, 10)):
-    for j in range(random.randint(0, len(string.ascii_lowercase))):
-        random_dict[random.choice(string.ascii_lowercase)] = random.randint(0, 1000)
-    random_list.append(random_dict.copy())
-    random_dict.clear()
+random_list = [{random.choice(string.ascii_lowercase): random.randint(0, 1000) for i in range(
+    random.randint(0, len(string.ascii_lowercase)))} for j in range(random.randint(2, 10))]
 
 # Part 2
 # Collect values by key from all dictionaries.
