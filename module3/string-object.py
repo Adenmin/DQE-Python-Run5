@@ -18,19 +18,15 @@ homEwork:
   last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87."""
 
 # Create dictionary for text lines.
-lines = dict.fromkeys(range(1, 5))
+lines = dict.fromkeys(range(0, 5))
 
 # Shrink whitespaces and split text by lines.
 basicString = re.sub(r"\n+", "\n", basicString).strip().split("\n")
-i = 1
-for line in basicString:
-    if not line.isspace():
-        lines[i] = line.strip().capitalize()
-        i += 1
+basicString = [line.strip().capitalize() for line in basicString if not line.isspace()]
+lines = {k: basicString[k] for k in lines}
 
 # Split lines by sentences.
-for k, v in lines.items():
-    lines[k] = v.split(".")
+lines = {k: v.split(".") for k, v in lines.items()}
 
 # Cleanup empty "sentences".
 for k, v in lines.items():
@@ -39,8 +35,8 @@ for k, v in lines.items():
             del v[i]
 
 # Split lines to header and main text.
-header = {k: v for k, v in lines.items() if k == 1}
-mainText = {k: v for k, v in lines.items() if k != 1}
+header = {k: v for k, v in lines.items() if k == 0}
+mainText = {k: v for k, v in lines.items() if k != 0}
 
 # Create additional sentence.
 last_words = []
@@ -67,11 +63,11 @@ header.update(mainText)
 fullText = header
 
 # Create variables for string format
-headerLine = " ".join(fullText[1])
-firstParagraph = " ".join(fullText[2])
-secondParagraph = " ".join(fullText[3])
-thirdParagraph = " ".join(fullText[4])
-fourthParagraph = " ".join(fullText[5])
+headerLine = " ".join(fullText[0])
+firstParagraph = " ".join(fullText[1])
+secondParagraph = " ".join(fullText[2])
+thirdParagraph = " ".join(fullText[3])
+fourthParagraph = " ".join(fullText[4])
 
 # Create final text
 finalText = f"""
