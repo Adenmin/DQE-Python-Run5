@@ -17,13 +17,10 @@ homEwork:
 
   last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87."""
 
-# Create dictionary for text lines.
-lines = dict.fromkeys(range(0, 5))
-
 # Shrink whitespaces and split text by lines.
 basicString = re.sub(r"\n+", "\n", basicString).strip().split("\n")
 basicString = [line.strip().capitalize() for line in basicString if not line.isspace()]
-lines = {k: basicString[k] for k in lines}
+lines = {k: v for k, v in enumerate(basicString)}
 
 # Split lines by sentences.
 lines = {k: v.split(".") for k, v in lines.items()}
@@ -46,7 +43,7 @@ for v in mainText.values():
 additionalSentence = " ".join(last_words).capitalize()
 
 # Add additional sentence to second paragraph.
-mainText[3].append(additionalSentence)
+mainText[2].append(additionalSentence)
 
 # Find and fix mistakes:
 for k, v in mainText.items():
@@ -59,8 +56,7 @@ for k, v in mainText.items():
 for k, v in mainText.items():
     for i in range(len(v)):
         v[i] = v[i].strip().capitalize() + '.'
-header.update(mainText)
-fullText = header
+fullText = {**header, **mainText}
 
 # Create variables for string format
 headerLine = " ".join(fullText[0])
@@ -77,11 +73,8 @@ finalText = f"""
   {thirdParagraph}
   {fourthParagraph}
 """
+print(finalText)
 
 # Count whitespace in final text
 whitespaceCount = len(re.findall(r"\s", finalText))
-
-# Replace whitespace count in final text
-finalText = finalText.replace("87", str(whitespaceCount))
-
-print(finalText)
+print(f"Whitespaces count: {whitespaceCount}")
