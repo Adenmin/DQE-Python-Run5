@@ -19,22 +19,22 @@ homEwork:
 
 
 # Split text by \s+ pattern. Return: String.
-def cleanup_raw_text(text):
+def cleanup_raw_text(text: str) -> str:
     return " ".join(re.split(r"\s+", text)).strip()
 
 
 # Split text by sentences. Return: List of strings.
-def split_text_by_sentences(text):
+def split_text_by_sentences(text: str) -> [str]:
     return re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.?])\s", text)
 
 
 # Capitalize sentences in list. Return: List of strings.
-def capitalize_sentences(sentences):
+def capitalize_sentences(sentences: [str]) -> [str]:
     return [line.strip().capitalize() for line in sentences]
 
 
 # Create sentence by last word of sentences in list. Return: String.
-def create_sentence_by_last_words(sentences):
+def create_sentence_by_last_words(sentences: [str]) -> str:
     last_words = []
     for sentence in sentences:
         last_words.append(re.search(r"\s(\w+)[.!?]$", sentence).group().replace('.', ''))
@@ -42,24 +42,24 @@ def create_sentence_by_last_words(sentences):
 
 
 # Add sentence to text by index. Return: String.
-def add_sentence(index, sentence, text):
+def add_sentence(index: int, sentence: str, text: str) -> str:
     sentences = split_text_by_sentences(text)
     sentences.insert(index, sentence)
     return build_text_from_sentences(sentences)
 
 
 # Fix mistake "iz", "Iz", "iZ". Return: String.
-def fix_mistake_iz(text):
+def fix_mistake_iz(text: str) -> str:
     return re.sub(r"\s(iz|Iz|iZ)\s", " is ", text)
 
 
 # Build text from sentences in list. Return: String.
-def build_text_from_sentences(sentences):
+def build_text_from_sentences(sentences: [str]) -> str:
     return "\n".join(sentences)
 
 
 # Count whitespaces in text. Return: Int.
-def whitespace_count(text):
+def whitespace_count(text: str) -> int:
     return len(re.findall(r"\s", text))
 
 
