@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 basicString = """
 homEwork:
@@ -24,17 +25,17 @@ def cleanup_raw_text(text: str) -> str:
 
 
 # Split text by sentences. Return: List of strings.
-def split_text_by_sentences(text: str) -> [str]:
+def split_text_by_sentences(text: str) -> List[str]:
     return re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.?])\s", text)
 
 
 # Capitalize sentences in list. Return: List of strings.
-def capitalize_sentences(sentences: [str]) -> [str]:
+def capitalize_sentences(sentences: List[str]) -> List[str]:
     return [line.strip().capitalize() for line in sentences]
 
 
 # Create sentence by last word of sentences in list. Return: String.
-def create_sentence_by_last_words(sentences: [str]) -> str:
+def create_sentence_by_last_words(sentences: List[str]) -> str:
     last_words = []
     for sentence in sentences:
         last_words.append(re.search(r"\s(\w+)[.!?]$", sentence).group().replace('.', ''))
