@@ -1,3 +1,4 @@
+import enum
 from abc import ABC, abstractmethod
 from datetime import datetime
 
@@ -5,7 +6,6 @@ from datetime import datetime
 class Publication(ABC):
     DATE_FORMAT = "%d/%m/%Y"
     DATE_TIME_FORMAT = "%d/%m/%Y %H:%M"
-    PUBLICATION_TYPES = ["News", "Private Ad", "Arabic Text"]
 
     def __init__(self, pub_text: [str]):
         self.pub_text = pub_text
@@ -21,3 +21,9 @@ class Publication(ABC):
     @abstractmethod
     def footer(self) -> str:
         pass
+
+
+class PublicationType(enum.Enum):
+    news = 1
+    privateAd = 2
+    arabicText = 3

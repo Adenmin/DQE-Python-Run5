@@ -5,18 +5,19 @@ from module5.ArabicText import ArabicText
 from module5.InputException import InputException
 from module5.News import News
 from module5.PrivateAd import PrivateAd
-from module5.Publication import Publication
+from module5.Publication import Publication, PublicationType
 
 
 class Publisher:
 
     @staticmethod
-    def get_publication_type() -> str:
-        pub_type = input("Welcome to Publisher!\n"
-                         "Please enter publication one of the follow type: News/Private Ad/Arabic Text: ")
-        if pub_type not in Publication.PUBLICATION_TYPES:
+    def get_publication_type() -> PublicationType:
+        pub_type = int(input("Welcome to Publisher!\n"
+                             "1 - News\n2 - Private Ad\n3 - Arabic Text\n"
+                             "Please enter number for one of the publication type: "))
+        if pub_type not in [pt.value for pt in PublicationType]:
             raise InputException("Publication type is not supported.")
-        return pub_type
+        return PublicationType(pub_type)
 
     @staticmethod
     def get_publication_text() -> List[str]:
@@ -33,11 +34,11 @@ class Publisher:
         return pub_text
 
     @staticmethod
-    def get_specific_info(pub_type: str) -> str:
-        if pub_type == "News":
+    def get_specific_info(pub_type: PublicationType) -> str:
+        if pub_type is PublicationType.news:
             return input("Enter City of news: ")
-        elif pub_type == "Private Ad":
-            exp_date = input("Enter expiration date in format %d/%m/%Y : ")
+        elif pub_type is PublicationType.privateAd:
+            exp_date = input("Enter expiration date in format like 01/01/2023 : ")
             if exp_date == datetime.strptime(exp_date, Publication.DATE_FORMAT):
                 raise InputException("Date format is not supported.")
             if datetime.strptime(exp_date, Publication.DATE_FORMAT) < datetime.now():
@@ -47,12 +48,12 @@ class Publisher:
             return ""
 
     @staticmethod
-    def pub_builder(pub_type: str, pub_text: List[str], spec_info: str) -> Publication:
-        if pub_type == "News":
+    def pub_builder(pub_type: PublicationType, pub_text: List[str], spec_info: str) -> Publication:
+        if pub_type is PublicationType.news:
             return News(pub_text, spec_info)
-        elif pub_type == "Private Ad":
+        elif pub_type is PublicationType.privateAd:
             return PrivateAd(pub_text, spec_info)
-        elif pub_type == "Arabic Text":
+        elif pub_type is PublicationType.arabicText:
             return ArabicText(pub_text)
 
     @staticmethod
