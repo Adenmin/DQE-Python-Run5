@@ -64,16 +64,16 @@ def whitespace_count(text: str) -> int:
     return len(re.findall(r"\s", text))
 
 
-# Function execution block.
-cleanText = cleanup_raw_text(basicString)
-textSentences = split_text_by_sentences(cleanText)
-textSentences = capitalize_sentences(textSentences)
-addSentence = create_sentence_by_last_words(textSentences)
-textWithAddSentence = add_sentence(3, addSentence, build_text_from_sentences(textSentences))
-correct_text = fix_mistake_iz(textWithAddSentence)
+if __name__ == "__main__":
+    cleanText = cleanup_raw_text(basicString)
+    textSentences = split_text_by_sentences(cleanText)
+    textSentences = capitalize_sentences(textSentences)
+    addSentence = create_sentence_by_last_words(textSentences)
+    textWithAddSentence = add_sentence(3, addSentence, build_text_from_sentences(textSentences))
+    correct_text = fix_mistake_iz(textWithAddSentence)
 
-# Print block.
-print("_____________________")
-print(correct_text)
-print("_____________________")
-print(f"Whitespaces count: {whitespace_count(correct_text)}")
+    # Print block.
+    print("_____________________")
+    print(correct_text)
+    print("_____________________")
+    print(f"Whitespaces count: {whitespace_count(correct_text)}")
