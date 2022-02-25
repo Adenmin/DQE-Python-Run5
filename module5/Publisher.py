@@ -56,7 +56,7 @@ class Publisher:
             return ""
 
     @staticmethod
-    def pub_builder(pub_type: PublicationType, pub_text: List[str], spec_info: str) -> Publication:
+    def build_publication(pub_type: PublicationType, pub_text: List[str], spec_info: str) -> Publication:
         if pub_type is PublicationType.news:
             return News(pub_text, spec_info)
         elif pub_type is PublicationType.privateAd:
@@ -65,7 +65,7 @@ class Publisher:
             return ArabicText(pub_text)
 
     @staticmethod
-    def writer(pub: Publication) -> None:
+    def write_to_newsfeed(pub: Publication) -> None:
         with open("newsfeed.txt", "a") as newsfeed:
             newsfeed.write(f"{pub.header()}\n{pub.body()}\n{pub.footer()}\n\n\n")
 
