@@ -5,10 +5,18 @@ from module5.ArabicText import ArabicText
 from module5.InputException import InputException
 from module5.News import News
 from module5.PrivateAd import PrivateAd
-from module5.Publication import Publication, PublicationType
+from module5.Publication import Publication, PublicationType, PublicationMethod
+from module5.RawParser import RawParser
 
 
 class Publisher:
+
+    @staticmethod
+    def get_pub_method() -> PublicationMethod:
+        pub_method = int(input("How you can want to send a publication\n"
+                               "1 - manual\n2 - from file\n"
+                               "Please enter number for one of the publication type: "))
+        return PublicationMethod(pub_method)
 
     @staticmethod
     def get_publication_type() -> PublicationType:
@@ -48,7 +56,7 @@ class Publisher:
             return ""
 
     @staticmethod
-    def pub_builder(pub_type: PublicationType, pub_text: List[str], spec_info: str) -> Publication:
+    def build_publication(pub_type: PublicationType, pub_text: List[str], spec_info: str) -> Publication:
         if pub_type is PublicationType.news:
             return News(pub_text, spec_info)
         elif pub_type is PublicationType.privateAd:
@@ -57,6 +65,15 @@ class Publisher:
             return ArabicText(pub_text)
 
     @staticmethod
-    def writer(pub: Publication) -> None:
+    def write_to_newsfeed(pub: Publication) -> None:
         with open("newsfeed.txt", "a") as newsfeed:
             newsfeed.write(f"{pub.header()}\n{pub.body()}\n{pub.footer()}\n\n\n")
+
+    @staticmethod
+    def get_file_path() -> str:
+        if int(input("1 - use default landing folder and file\n"
+                     "2 - use custom path to your file\n"
+                     "Choose file location variant: ")) == 1:
+            return RawParser.DEFAULT_FILE_PATH
+        else:
+            return input("Type full path to your file with publications: ")
