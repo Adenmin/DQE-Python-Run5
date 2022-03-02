@@ -1,3 +1,4 @@
+import json
 import os.path
 import pathlib
 from typing import List, Dict
@@ -7,31 +8,50 @@ from module5.InputException import InputException
 
 
 class RawParser:
-    DEFAULT_FILE_PATH = os.path.join(pathlib.Path().resolve(), 'landing', 'raw-publications.txt')
+    DEFAULT_LANDING_DIR = os.path.join(pathlib.Path().resolve(), 'landing')
 
     def __init__(self, file_path):
         self.file_path = file_path
 
     def parse_raw_file(self):
-        return self.__get_pub_objects(self.__read_file())
+        return self.__read_file()
 
-    def __read_file(self) -> List[str]:
-        with open(self.file_path) as file:
-            lines = file.readlines()
-        return lines
+    def __read_file(self) -> List[Dict[str, str]]:
+        if pathlib.Path(self.file_path).suffix == '.txt':
+            return self.__normalize_raw_pubs(self.__get_raw_pubs_from_txt())
+        if pathlib.Path(self.file_path).suffix == '.json':
+            return self.__normalize_raw_pubs(self.__get_raw_pubs_from_json())
+        else:
+            file_format = pathlib.Path(self.file_path).suffix
+            raise InputException(f"{file_format} file isn't supported.")
 
-    def __get_pub_objects(self, lines: List[str]) -> List[Dict[str, str]]:
+    def __get_raw_pubs_from_json(self) -> List[Dict[str, str]]:
         try:
+            return json.load(open(self.file_path))['pubs']
+        except Exception:
+            raise InputException('Incorrect JSON schema.')
+
+    def __get_raw_pubs_from_txt(self) -> List[Dict[str, str]]:
+        try:
+            with open(self.file_path) as file:
+                lines = file.readlines()
             publications = []
             for line in lines:
                 objs = line.split(";")
-                pub = {'type': objs[0].lower().replace(" ", ""),
-                       'text': self.__normalize_pub_text(objs[1]),
-                       'spec_info': objs[2].capitalize()}
+                pub = {'type': objs[0],
+                       'text': objs[1],
+                       'spec_info': objs[2]}
                 publications.append(pub)
             return publications
         except Exception:
-            raise InputException("Wrong file format. Please read documentation.")
+            raise InputException('Incorrect text file.')
+
+    def __normalize_raw_pubs(self, raw_pubs: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        for pub in raw_pubs:
+            pub['type'] = pub['type'].lower().replace(" ", "")
+            pub['text'] = self.__normalize_pub_text(pub['text'])
+            pub['spec_info'] = pub['spec_info'].capitalize()
+        return raw_pubs
 
     @staticmethod
     def __normalize_pub_text(raw_text: str) -> List[str]:

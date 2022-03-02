@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import List
 
@@ -74,6 +75,9 @@ class Publisher:
         if int(input("1 - use default landing folder and file\n"
                      "2 - use custom path to your file\n"
                      "Choose file location variant: ")) == 1:
-            return RawParser.DEFAULT_FILE_PATH
+            try:
+                return os.path.join(RawParser.DEFAULT_LANDING_DIR, os.listdir(RawParser.DEFAULT_LANDING_DIR)[0])
+            except Exception:
+                raise InputException("Landing folder is empty.")
         else:
             return input("Type full path to your file with publications: ")
