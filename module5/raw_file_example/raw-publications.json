@@ -1,0 +1,19 @@
+{
+  "pubs": [
+    {
+      "type": "NewS",
+      "text": "JSON Statham HAS wrong format!",
+      "spec_info": "London"
+    },
+    {
+      "type": "private Ad",
+      "text": "USD/RUB - 1/100",
+      "spec_info": "01/05/2022"
+    },
+    {
+      "type": "araBIC Text",
+      "text": "JSON - NOSJ",
+      "spec_info": ""
+    }
+  ]
+}
