@@ -1,6 +1,7 @@
 import json
 import os.path
 import pathlib
+import xml.etree.ElementTree as ET
 from typing import List, Dict
 
 from module4 import string_object_ref as sof
@@ -21,9 +22,24 @@ class RawParser:
             return self.__normalize_raw_pubs(self.__get_raw_pubs_from_txt())
         if pathlib.Path(self.file_path).suffix == '.json':
             return self.__normalize_raw_pubs(self.__get_raw_pubs_from_json())
+        if pathlib.Path(self.file_path).suffix == '.xml':
+            return self.__normalize_raw_pubs(self.__get_raw_pubs_from_xml())
         else:
             file_format = pathlib.Path(self.file_path).suffix
             raise InputException(f"{file_format} file isn't supported.")
+
+    def __get_raw_pubs_from_xml(self):
+        try:
+            xml_root = ET.parse(self.file_path).getroot()
+            publication = []
+            for p in xml_root.iter('pub'):
+                pub = {'type': p.get('type'),
+                       'text': p.find('text').text,
+                       'spec_info': p.find('text').get('spec_info')}
+                publication.append(pub)
+            return publication
+        except Exception:
+            raise InputException('Incorrect XML schema.')
 
     def __get_raw_pubs_from_json(self) -> List[Dict[str, str]]:
         try:
@@ -50,7 +66,8 @@ class RawParser:
         for pub in raw_pubs:
             pub['type'] = pub['type'].lower().replace(" ", "")
             pub['text'] = self.__normalize_pub_text(pub['text'])
-            pub['spec_info'] = pub['spec_info'].capitalize()
+            if pub['spec_info'] is not None:
+                pub['spec_info'] = pub['spec_info'].capitalize()
         return raw_pubs
 
     @staticmethod

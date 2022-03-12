@@ -1,0 +1,11 @@
+<pubs>
+    <pub type="news">
+        <text spec_info="somewhere">We have no other news for you.</text>
+    </pub>
+    <pub type="private Ad">
+        <text spec_info="10/06/2023">looking for an apartments in Montenegro.</text>
+    </pub>
+    <pub type="araBIC Text">
+        <text>UAE is increasing oil production.</text>
+    </pub>
+</pubs>
